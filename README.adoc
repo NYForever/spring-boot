@@ -1,3 +1,21 @@
+
+## 1.springboot自动装配源码
+
+入口 `@EnableAutoConfiguration` `AutoConfigurationImportSelector`
+
+1. `selectImports` 方法 `getAutoConfigurationEntry()`
+2. `getCandidateConfigurations()` 扫描所有依赖包的 `MATA-INF/spring.factories`文件，加载自动化配置类
+  即配置 `org.springframework.boot.autoconfigure.EnableAutoConfiguration` 对应的 `xxxAutoConfigurition`类
+3. 拿到自动化配置类，最终通过 `ImportSelector` 的 `selectImports()` 交由spring，在启动过程中的 `refresh()`方法会实例化bean
+  详细细节见spring源码解读项目
+4. springboot自动装配，都是基于定义了这一套SPI规范，如何自定义starter
+  1. 创建 `MATA-INF/spring.factories` 文件，指定要自动化加载的类
+  2. 在主项目中依赖该starter，启动时便会自动扫描该文件，将自动化配置类中定义的bean信息注入到spring中
+
+
+
+
+
 = Spring Boot image:https://ci.spring.io/api/v1/teams/spring-boot/pipelines/spring-boot-2.3.x/jobs/build/badge["Build Status", link="https://ci.spring.io/teams/spring-boot/pipelines/spring-boot-2.3.x?groups=Build"] image:https://badges.gitter.im/Join Chat.svg["Chat",link="https://gitter.im/spring-projects/spring-boot?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge"]
 :docs: https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference
 :github: https://github.com/spring-projects/spring-boot

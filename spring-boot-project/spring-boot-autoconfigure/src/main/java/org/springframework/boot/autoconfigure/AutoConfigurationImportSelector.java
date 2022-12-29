@@ -120,11 +120,17 @@ public class AutoConfigurationImportSelector implements DeferredImportSelector, 
 			return EMPTY_ENTRY;
 		}
 		AnnotationAttributes attributes = getAttributes(annotationMetadata);
+		//通过soring.factories加载 配置文件中的自动化配置类，org.springframework.boot.autoconfigure.EnableAutoConfiguration
+		//即 xxxAutoConfiguration
 		List<String> configurations = getCandidateConfigurations(annotationMetadata, attributes);
 		configurations = removeDuplicates(configurations);
+		//exclusion排除掉不需要的配置类
 		Set<String> exclusions = getExclusions(annotationMetadata, attributes);
 		checkExcludedClasses(configurations, exclusions);
 		configurations.removeAll(exclusions);
+		//condition排出掉部分配置类，剩下最终要加载的配置类
+		//只引入spring-boot-web的情况下，这里需要加载的配置类为23个，但是并不是每个配置类都会被加载
+		//因为很多配置类的加载有很多条件，如 @ConditionOnClass 等
 		configurations = getConfigurationClassFilter().filter(configurations);
 		fireAutoConfigurationImportEvents(configurations, exclusions);
 		return new AutoConfigurationEntry(configurations, exclusions);
