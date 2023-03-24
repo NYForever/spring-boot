@@ -13,6 +13,9 @@
   2. 在主项目中依赖该starter，启动时便会自动扫描该文件，将自动化配置类中定义的bean信息注入到spring中
 
 
+## 2.ApplicationRunner
+
+1. 允许我们在Spring容器启动完成后执行一些代码。原理是怎么样的
 
 
 
